@@ -721,7 +721,7 @@ photo.style.boxShadow="0 12px 28px rgba(0,0,0,.15)";
 
 const video = document.getElementById("birthdayVideo");
 
-if(video){
+if (video !== null) {
   video.addEventListener("play", function(){
     document.getElementById("bgMusic").pause();
   });
