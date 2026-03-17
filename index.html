@@ -471,14 +471,15 @@ Today is all about you 💖
 
 <h2>Special Birthday Video 🎬</h2>
 
-<div class="video-box">
+<div class="video-box" onclick="adjustMusicVolume()">
+
 <iframe 
-id="birthdayVideo"
 src="https://drive.google.com/file/d/1SeBybh3wxbvksF1_BJCliC1T94bQlK-L/preview"
 width="100%" 
 height="100%" 
 allow="autoplay">
 </iframe>
+
 </div>
 
 </section>
@@ -728,6 +729,67 @@ photo.style.boxShadow="0 12px 28px rgba(0,0,0,.15)";
 document.getElementById("birthdayVideo").addEventListener("play",function(){
 document.getElementById("bgMusic").pause();
 });
+
+let videoPlaying = false;
+
+function toggleVideoMusic(){
+
+const music = document.getElementById("bgMusic");
+
+if(!videoPlaying){
+music.pause();
+videoPlaying = true;
+}else{
+music.play();
+videoPlaying = false;
+}
+
+}
+
+
+let lowered = false;
+
+function adjustMusicVolume(){
+
+const music = document.getElementById("bgMusic");
+
+if(!lowered){
+music.volume = 0.2; // 🔉 reduce volume
+lowered = true;
+}else{
+music.volume = 0.8; // 🔊 restore volume
+lowered = false;
+}
+
+}
+
+function adjustMusicVolume(){
+
+const music = document.getElementById("bgMusic");
+
+if(music.volume > 0.3){
+
+let fade = setInterval(()=>{
+if(music.volume > 0.2){
+music.volume -= 0.05;
+}else{
+clearInterval(fade);
+}
+},50);
+
+}else{
+
+let fade = setInterval(()=>{
+if(music.volume < 0.8){
+music.volume += 0.05;
+}else{
+clearInterval(fade);
+}
+},50);
+
+}
+
+}
 
 </script>
 
