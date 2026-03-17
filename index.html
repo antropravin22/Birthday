@@ -536,22 +536,42 @@ showSurprise();
 /* ORIGINAL FUNCTIONS */
 
 function showSurprise(){
-document.getElementById("surprisePage").style.display="block";
-const music=document.getElementById("bgMusic");
-music.volume=.8;
-music.play();
-flipPhotos();
+  document.getElementById("surprisePage").style.display="block";
+
+  const music=document.getElementById("bgMusic");
+  music.volume = 0.8;
+
+  const playPromise = music.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      console.log("User interaction required to play audio");
+    });
+  }
+
+  flipPhotos();
 }
 
 function flipPhotos(){
-const photos=document.querySelectorAll(".photo");
-const observer=new IntersectionObserver((entries)=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){entry.target.classList.add("flip");}
-else{entry.target.classList.remove("flip");}
-});
-},{threshold:.4});
-photos.forEach(photo=>observer.observe(photo));
+  const photos=document.querySelectorAll(".photo");
+
+  if("IntersectionObserver" in window){
+
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add("flip");
+        }
+      });
+    },{threshold:.4});
+
+    photos.forEach(photo=>observer.observe(photo));
+
+  } else {
+    // fallback for old mobile
+    photos.forEach(photo=>{
+      photo.classList.add("flip");
+    });
+  }
 }
 
 function openMemory(){
@@ -790,6 +810,7 @@ clearInterval(fade);
 }
 
 }
+
 
 </script>
 
