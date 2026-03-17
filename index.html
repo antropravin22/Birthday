@@ -513,15 +513,16 @@ Happy Birthday<br>Mahaswetha 🎂
 </audio>
 
 <script>
+document.addEventListener("DOMContentLoaded", function(){
 
 /* NEW CAKE FUNCTIONS */
 
-function openCake(){
+window.openCake = function(){
 document.getElementById("home").style.display="none";
 document.getElementById("cakePage").style.display="flex";
 }
 
-function cutCake(){
+window.cutCake = function(){
 
 const cake=document.querySelector(".cake");
 cake.classList.add("cut");
@@ -535,7 +536,7 @@ showSurprise();
 
 /* ORIGINAL FUNCTIONS */
 
-function showSurprise(){
+window.showSurprise = function(){
   document.getElementById("surprisePage").style.display="block";
 
   const music=document.getElementById("bgMusic");
@@ -543,9 +544,7 @@ function showSurprise(){
 
   const playPromise = music.play();
   if (playPromise !== undefined) {
-    playPromise.catch(() => {
-      console.log("User interaction required to play audio");
-    });
+    playPromise.catch(() => {});
   }
 
   flipPhotos();
@@ -558,14 +557,10 @@ function flipPhotos(){
     entries.forEach(entry=>{
       
       if(entry.isIntersecting){
-        // 👀 visible → straight
-        entry.target.classList.add("flip");
-        entry.target.classList.add("show");
+        entry.target.classList.add("flip","show");
         entry.target.classList.remove("hide");
       }else{
-        // 🙈 hidden → rotated
-        entry.target.classList.remove("flip");
-        entry.target.classList.remove("show");
+        entry.target.classList.remove("flip","show");
         entry.target.classList.add("hide");
       }
 
@@ -575,7 +570,7 @@ function flipPhotos(){
   photos.forEach(photo => observer.observe(photo));
 }
 
-function openMemory(){
+window.openMemory = function(){
 
 document.getElementById("surprisePage").style.display="none";
 document.getElementById("memoryPage").style.display="block";
@@ -645,15 +640,8 @@ document.querySelector(".memoryCenter").style.display="block";
 
 setTimeout(()=>{
 
-typeText(
-"leftQuote",
-"Keep smiling in every situation 😊"
-);
-
-typeText(
-"rightQuote",
-"May your birthday be filled with happiness, laughter and beautiful memories 🎂"
-);
+typeText("leftQuote","Keep smiling in every situation 😊");
+typeText("rightQuote","May your birthday be filled with happiness, laughter and beautiful memories 🎂");
 
 },800);
 
@@ -711,52 +699,38 @@ setTimeout(typing,speed);
 typing();
 }
 
-
-
 const glowColors=[
-"#ff4d6d",
-"#ff9f1c",
-"#2ec4b6",
-"#6a5acd",
-"#ff66c4",
-"#00c2ff",
-"#ffd60a"
+"#ff4d6d","#ff9f1c","#2ec4b6","#6a5acd","#ff66c4","#00c2ff","#ffd60a"
 ];
 
 const photos=document.querySelectorAll(".photo");
 
 photos.forEach(photo=>{
-
 photo.addEventListener("mouseenter",()=>{
-
 const color=glowColors[Math.floor(Math.random()*glowColors.length)];
-
 photo.style.boxShadow=
 "0 0 20px "+color+
 ", 0 0 40px "+color+
 ", 0 0 60px "+color+
 ", 0 12px 28px rgba(0,0,0,.2)";
-
 });
-
 photo.addEventListener("mouseleave",()=>{
-
 photo.style.boxShadow="0 12px 28px rgba(0,0,0,.15)";
-
+});
 });
 
-});
+const video = document.getElementById("birthdayVideo");
 
-document.getElementById("birthdayVideo").addEventListener("play",function(){
-document.getElementById("bgMusic").pause();
-});
+if(video){
+  video.addEventListener("play", function(){
+    document.getElementById("bgMusic").pause();
+  });
+}
 
 let videoPlaying = false;
 
-function toggleVideoMusic(){
-
+window.toggleVideoMusic = function(){
 const music = document.getElementById("bgMusic");
-
 if(!videoPlaying){
 music.pause();
 videoPlaying = true;
@@ -764,27 +738,9 @@ videoPlaying = true;
 music.play();
 videoPlaying = false;
 }
-
 }
 
-
-let lowered = false;
-
-function adjustMusicVolume(){
-
-const music = document.getElementById("bgMusic");
-
-if(!lowered){
-music.volume = 0.2; // 🔉 reduce volume
-lowered = true;
-}else{
-music.volume = 0.8; // 🔊 restore volume
-lowered = false;
-}
-
-}
-
-function adjustMusicVolume(){
+window.adjustMusicVolume = function(){
 
 const music = document.getElementById("bgMusic");
 
@@ -812,29 +768,8 @@ clearInterval(fade);
 
 }
 
-.photo{
-transition: transform 0.6s ease, box-shadow 0.3s;
-}
-
-/* 🙈 hidden (rotated) */
-.photo.hide{
-transform: rotate(25deg) scale(0.95);
-opacity: 0.7;
-}
-
-/* 👀 visible (straight) */
-.photo.show{
-transform: rotate(0deg) scale(1);
-opacity: 1;
-}
 const bgColors = [
-  "#ffe3ec",
-  "#fff7cc",
-  "#e0f7fa",
-  "#e6ffe6",
-  "#f3e5f5",
-  "#fff0f5",
-  "#e3f2fd"
+"#ffe3ec","#fff7cc","#e0f7fa","#e6ffe6","#f3e5f5","#fff0f5","#e3f2fd"
 ];
 
 document.querySelectorAll(".photo").forEach(photo => {
@@ -842,7 +777,7 @@ document.querySelectorAll(".photo").forEach(photo => {
   photo.style.background = color;
 });
 
-
+});
 </script>
 
 </body>
