@@ -552,26 +552,27 @@ function showSurprise(){
 }
 
 function flipPhotos(){
-  const photos=document.querySelectorAll(".photo");
+  const photos = document.querySelectorAll(".photo");
 
-  if("IntersectionObserver" in window){
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      
+      if(entry.isIntersecting){
+        // 👀 visible → straight
+        entry.target.classList.add("flip");
+        entry.target.classList.add("show");
+        entry.target.classList.remove("hide");
+      }else{
+        // 🙈 hidden → rotated
+        entry.target.classList.remove("flip");
+        entry.target.classList.remove("show");
+        entry.target.classList.add("hide");
+      }
 
-    const observer=new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add("flip");
-        }
-      });
-    },{threshold:.4});
-
-    photos.forEach(photo=>observer.observe(photo));
-
-  } else {
-    // fallback for old mobile
-    photos.forEach(photo=>{
-      photo.classList.add("flip");
     });
-  }
+  }, { threshold: 0.4 });
+
+  photos.forEach(photo => observer.observe(photo));
 }
 
 function openMemory(){
@@ -810,6 +811,36 @@ clearInterval(fade);
 }
 
 }
+
+.photo{
+transition: transform 0.6s ease, box-shadow 0.3s;
+}
+
+/* 🙈 hidden (rotated) */
+.photo.hide{
+transform: rotate(25deg) scale(0.95);
+opacity: 0.7;
+}
+
+/* 👀 visible (straight) */
+.photo.show{
+transform: rotate(0deg) scale(1);
+opacity: 1;
+}
+const bgColors = [
+  "#ffe3ec",
+  "#fff7cc",
+  "#e0f7fa",
+  "#e6ffe6",
+  "#f3e5f5",
+  "#fff0f5",
+  "#e3f2fd"
+];
+
+document.querySelectorAll(".photo").forEach(photo => {
+  const color = bgColors[Math.floor(Math.random() * bgColors.length)];
+  photo.style.background = color;
+});
 
 
 </script>
